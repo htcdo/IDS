@@ -1,0 +1,31 @@
+##### Helena Oliveira, 28.02.2023
+##### Procedimentos - UNIAO IDS POR CAR 
+
+## --- INSTALANDO PACOTES
+install.packages("writexl", 
+                 "dplyr", 
+                 "tidyr", 
+                 "readxl")
+
+## --- CARREGANDO PACOTES
+library("writexl", 
+        "dplyr", 
+        "tidyr", 
+        "readxl")
+
+## --- PREPARANDO DADOS DO CLIENTE 
+IDS_LOTEX <- read_excel("IDS_LOTEX.xlsx")
+
+View(IDS_LOTE3)
+
+## --- AGRUPAR ID POR CAR 
+IDS <- IDS_LOTEX %>% 
+  group_by(numero_car) %>% 
+  mutate(row_id = row_number()) %>% 
+  pivot_wider(id_cols = "numero_car",  names_from = row_id,
+              values_from = fazenda_id, 
+              names_glue = "{.value}{row_id}") %>% 
+  ungroup()
+
+## ---SALVANDO RESULTADO EM EXCEL 
+write_xlsx(IDS, "C:\\Users\\SEULOCAL\\IDS.xlsx")
